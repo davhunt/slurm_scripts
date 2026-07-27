@@ -1,0 +1,34 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=missing-subs
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=10
+#SBATCH --mem=20GB
+#SBATCH --time=7:00:00
+#SBATCH --output=/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/slurm-outs/slurm-missingsubs-%j.out
+
+module load matlab/2023b
+
+echo "running sub 5 durations_unsmoothed_native"
+matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); decoding_template_gng_run_initial_cv_splits_slate_moreargs_rad(05,10,'durations','native',3); exit;"
+
+echo "running sub 6 onsets_only_unsmoothed_native"
+matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); decoding_template_gng_run_initial_cv_splits_slate_moreargs_rad(06,10,'onsets','native',3); exit;"
+
+echo "running sub 8 onsets_only_unsmoothed"
+matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); decoding_template_gng_run_initial_cv_splits_slate_moreargs_rad(08,10,'onsets','mni',3); exit;"
+
+echo "running sub 10 onsets_only_unsmoothed"
+matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); decoding_template_gng_run_initial_cv_splits_slate_moreargs_rad(10,10,'onsets','mni',3); exit;"
+
+echo "running sub 10 onsets_only_unsmoothed"
+matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); decoding_template_gng_run_initial_cv_splits_slate_moreargs_rad(16,10,'onsets','mni',3); exit;"
+
+echo "running sub 17 durations_unsmoothed"
+matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); decoding_template_gng_run_initial_cv_splits_slate_moreargs_rad(17,10,'durations','mni',3); exit;"
+
+echo "running sub 20 durations_unsmoothed_native"
+matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); decoding_template_gng_run_initial_cv_splits_slate_moreargs_rad(20,10,'durations','native',3); exit;"
+
+echo "done!"

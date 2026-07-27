@@ -1,0 +1,54 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=register-perms-to-mni
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=1GB
+#SBATCH --time=04:00:00
+#SBATCH --output=/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/slurm-outs/register-perms-to-mni-%j.out
+
+# Ex: sbatch transform_permutations_to_mni_job.script
+
+module load ants/2.3.5
+# ants/2.5.0 gives error:
+#000: /N/soft/rhel8/ants/build/gnu-2.5.0/ITKv5/Modules/ThirdParty/HDF5/src/itkhdf5/src/H5T.c line 1888 in itk_H5Tcopy(): obj_id is not a datatype ID
+#    major: Invalid arguments to routine
+#    minor: Inappropriate type
+# so use 2.3.5
+module load fsl
+#module load gnu-parallel
+
+#subs_to_process="1"
+#subs_to_process=(3 4 5 6 7 8 9 10 13 14 15 16 17 18 19 20 21 22 23 24)
+#subs_to_process=(20 21 22 23 24)
+#subs_to_process=(1 2 3 4)
+#subs_to_process=(5 6 7 8 9 10 13 14 15 16 17 18 19 20 21 22 23 24)
+#subs_to_process=(1 2 3 4 5 6 7 8 9 10 13)
+#subs_to_process=(14 15 16 17 18 19 20 21 22 23 24)
+#subs_to_process=(1 2 3 4 5 6 7 8 9 10 13)
+#subs_to_process=(14 15 16 17 18 19 20 21 22 23 24)
+#subs_to_process=(1 2 3 4 5 6)
+#subs_to_process=(7 8 9 10 13)
+#subs_to_process=(14 15 16 17 18 19)
+subs_to_process=(20 21 22 23 24)
+#subfolder="breakpoint_rts_unsmoothed_native"
+#subfolder="breakpoint_rts_unsmoothed_native_antsmask"
+#sfolder="breakpoint_rts_unsmoothed_native_antsmask"
+sfolder="breakpoint_rts_unsmoothed_native_antsmask_new_bps"
+
+echo "starting"
+
+#echo "$subs_to_process" | parallel -j $SLURM_CPUS_PER_TASK /N/slate/brainevo/Implicit_Learning/transform_permutations_to_mni.sh {} # this didn't work
+
+#/N/slate/brainevo/Implicit_Learning/transform_permutations_to_mni.sh $subs_to_process
+
+#for sub in "$subs_to_process"; do
+for sub in ${subs_to_process[@]}; do
+  #/N/slate/brainevo/Implicit_Learning/transform_permutations_to_mni.sh $sub $subfolder
+  /N/slate/brainevo/Implicit_Learning/slurm_scripts/transform_permutations_to_mni.sh $sub $sfolder
+done
+
+#parallel -j $SLURM_CPUS_PER_TASK "/N/slate/brainevo/Implicit_Learning/transform_permutations_to_mni.sh {}" ::: $subs_to_process # this worked
+
+echo "done"

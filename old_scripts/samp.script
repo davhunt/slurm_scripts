@@ -1,0 +1,24 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=test-script
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=30MB
+#SBATCH --time=00:01:00
+#SBATCH --output=slurm-permutation-%j.out
+
+module load matlab/2023b
+
+#matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); which decoding_template_gng_run_initial_cv_splits_slate; disp('ok'); exit;"
+#matlab -nodisplay -nosplash -nodesktop -r "disp('test script'); exit;"
+#matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); decoding_template_gng_run_initial_cv_splits_slate(18,10); exit;"
+#matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/statistics'); stats_average_repetitions_slate('/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/018/MVPA/durations_unsmoothed/TDT_results'); exit;"
+#matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/statistics'); stats_permutation_slate('/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/018/MVPA/onsets_only_unsmoothed/TDT_results','/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/018/MVPA/onsets_only_unsmoothed/perm', 10, 120, 'right'); exit;"
+#matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/statistics'); stats_permutation_slate('/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/018/MVPA/durations_unsmoothed/TDT_results','/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/018/MVPA/durations_unsmoothed/perm', 10, 120, 'right'); exit;"
+
+echo $sub
+
+if [[ -z $sub ]]; then echo "no sub"; fi
+
+echo "done!"

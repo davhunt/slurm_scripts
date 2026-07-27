@@ -1,0 +1,21 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=register-aal-atlas
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=14GB
+#SBATCH --time=03:00:00
+#SBATCH --output=/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/slurm-outs/register-aal-atlas-%j.out
+
+# Usage: sbatch --export=ALL,sub=1 register_aal_atlas_to_epi_job.script
+
+module load fsl
+
+#for sub in 01 02 03 04 05 06 07 08 09 10 13; do
+#    echo "starting registration for subject $sub"
+#    /N/slate/brainevo/Implicit_Learning/register_aal_atlas_to_epi.sh $sub
+#done
+
+# one at a time
+/N/slate/brainevo/Implicit_Learning/slurm_scripts/register_aal_atlas_to_epi.sh $sub

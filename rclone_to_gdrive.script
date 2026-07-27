@@ -1,0 +1,29 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=rclone-to-gdrive
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=2GB
+#SBATCH --time=30:00:00
+#SBATCH --output=/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/slurm-outs/rclone-to-gdrive-%j.out
+
+# upload perms to GDrive
+# Usage: sbatch --export=ALL,subj=3 rclone_to_gdrive.script
+module load rclone/1.66.0
+
+if [[ -z $subj ]]; then
+  echo "subject not specified, exiting."
+  exit 1
+fi
+
+#subs_to_process="1"
+
+echo "starting"
+
+for perm in $(seq -w 1 500); do
+#for perm in $(seq -w 224 500); do
+  rclone copy /N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/0${subj}/MVPA/durations_unsmoothed_native/perm/perm${perm} google-drive-david:permutations_durations/${subj}/perm/perm${perm}
+done
+
+echo "done"

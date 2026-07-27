@@ -1,0 +1,35 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=extract-brainmask
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=1GB
+#SBATCH --time=02:00:00
+#SBATCH --output=/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/slurm-outs/extract-brainmask-%j.out
+
+# Ex: sbatch --export=ALL,subj=6,structural=/Volumes/data1/T1_and_Complex_seq/006/s9518tomsImplicitLearning-0003-00001-000208-01.nii extract_brainmask_ants.script
+
+module load ants/2.3.5
+
+if [[ -n $subj ]] && [[ -n $structural ]]; then echo "Processing subject $subj";
+else
+    exit 1
+fi
+
+subj=$(printf "%02d" $subj)
+
+if [[ ! -d /N/slate/brainevo/Implicit_Learning/Brain_masks_native/$subj ]]; then
+    mkdir /N/slate/brainevo/Implicit_Learning/Brain_masks_native/$subj
+fi
+
+#antsBrainExtraction.sh -d 3 -a $structural -e /N/slate/brainevo/Implicit_Learning/ants_brain_templates/MICCAI2012-Multi-Atlas-Challenge-Data/T_template0.nii.gz -m /N/slate/brainevo/Implicit_Learning/ants_brain_templates/MICCAI2012-Multi-Atlas-Challenge-Data/T_template0_BrainCerebellumProbabilityMask.nii.gz -o /N/slate/brainevo/Implicit_Learning/Brain_masks_native/$subj
+
+
+# Or use     -f:  Brain extraction registration mask    Mask used for registration to limit the metric computation to
+#                                                       a specific region.
+# "The mask resolved my issues with brain extraction and reduced computation time by half" probably no downsides?
+antsBrainExtraction.sh -d 3 -a $structural -e /N/slate/brainevo/Implicit_Learning/ants_brain_templates/MICCAI2012-Multi-Atlas-Challenge-Data/T_template0.nii.gz -m /N/slate/brainevo/Implicit_Learning/ants_brain_templates/MICCAI2012-Multi-Atlas-Challenge-Data/T_template0_BrainCerebellumProbabilityMask.nii.gz -o /N/slate/brainevo/Implicit_Learning/Brain_masks_native/$subj -f /N/slate/brainevo/Implicit_Learning/ants_brain_templates/MICCAI2012-Multi-Atlas-Challenge-Data/T_template0_BrainCerebellumRegistrationMask.nii.gz
+
+
+echo "done!"

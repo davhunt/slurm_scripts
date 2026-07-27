@@ -1,0 +1,27 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=groupstats
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=60G
+#SBATCH --time=24:00:00
+#SBATCH --output=/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/slurm-outs/cosmo-groupstats-%j.out
+
+# Takes about 12 hrs per 100,000 iterations, ~40 GB RAM
+module load matlab/2023b
+
+echo "running cosmo-groupstats."
+
+#time matlab -nodisplay -nosplash -nodesktop -r "addpath(genpath('/N/slate/brainevo/Implicit_Learning/matlab_nifti_tools')); addpath(genpath('/N/slate/brainevo/Implicit_Learning/CoSMoMVPA/mvpa')); cosmo_groupstats('breakpoint_rts_unsmoothed_native_antsmask_new_bps','/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/breakpoint_rts_unsmoothed_native_antsmask_new_bps_group_results_7-23-26/tfce_100k',100000,'output_string','tstat_tfce_','null_data_mat','/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/breakpoint_rts_unsmoothed_native_antsmask_new_bps_group_results_7-23-26/null_data.mat'); exit;"
+
+#time matlab -nodisplay -nosplash -nodesktop -r "addpath(genpath('/N/slate/brainevo/Implicit_Learning/matlab_nifti_tools')); addpath(genpath('/N/slate/brainevo/Implicit_Learning/CoSMoMVPA/mvpa')); cosmo_groupstats('breakpoint_rts_unsmoothed_native_antsmask_new_bps','/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/breakpoint_rts_unsmoothed_native_antsmask_new_bps_group_results_7-23-26/maxsize_2.831_100k',100000,'output_string','tstat_maxsize_','null_data_mat','/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/breakpoint_rts_unsmoothed_native_antsmask_new_bps_group_results_7-23-26/null_data.mat', 'cluster_stat','maxsize','cluster_threshold',2.831); exit;"
+
+#time matlab -nodisplay -nosplash -nodesktop -r "addpath(genpath('/N/slate/brainevo/Implicit_Learning/matlab_nifti_tools')); addpath(genpath('/N/slate/brainevo/Implicit_Learning/CoSMoMVPA/mvpa')); cosmo_groupstats('breakpoint_rts_unsmoothed_native_antsmask_new_bps','/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/breakpoint_rts_unsmoothed_native_antsmask_new_bps_group_results_7-23-26/maxsize_3.527_100k',100000,'output_string','tstat_maxsize','null_data_mat','/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/breakpoint_rts_unsmoothed_native_antsmask_new_bps_group_results_7-23-26/null_data.mat', 'cluster_stat','maxsize','cluster_threshold',3.527); exit;"
+
+#time matlab -nodisplay -nosplash -nodesktop -r "addpath(genpath('/N/slate/brainevo/Implicit_Learning/matlab_nifti_tools')); addpath(genpath('/N/slate/brainevo/Implicit_Learning/CoSMoMVPA/mvpa')); cosmo_groupstats('breakpoint_rts_unsmoothed_native_antsmask_new_bps','/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/breakpoint_rts_unsmoothed_native_antsmask_new_bps_group_results_7-23-26/maxsum_2.831_100k',100000,'output_string','tstat_maxsum_','null_data_mat','/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/breakpoint_rts_unsmoothed_native_antsmask_new_bps_group_results_7-23-26/null_data.mat', 'cluster_stat','maxsum','cluster_threshold',2.831); exit;"
+
+time matlab -nodisplay -nosplash -nodesktop -r "addpath(genpath('/N/slate/brainevo/Implicit_Learning/matlab_nifti_tools')); addpath(genpath('/N/slate/brainevo/Implicit_Learning/CoSMoMVPA/mvpa')); cosmo_groupstats('breakpoint_rts_unsmoothed_native_antsmask_new_bps','/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/breakpoint_rts_unsmoothed_native_antsmask_new_bps_group_results_7-23-26/maxsum_3.527_100k',100000,'output_string','tstat_maxsum_','null_data_mat','/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/breakpoint_rts_unsmoothed_native_antsmask_new_bps_group_results_7-23-26/null_data.mat', 'cluster_stat','maxsum','cluster_threshold',3.527); exit;"
+
+
+
+echo "done!"

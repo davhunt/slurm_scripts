@@ -1,0 +1,35 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=cosmo-sigclusters
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=10G
+#SBATCH --time=24:00:00
+#SBATCH --output=/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/slurm-outs/cosmo-sigclusters-%j.out
+
+module load matlab/2023b
+
+#if [[ -z $subj ]]; then
+#  echo "subject not specified, exiting."
+#  exit 1
+#fi
+if [[ -z $dh ]]; then
+  echo "dh not specified, using 0.1"
+  dh=0.1
+fi
+
+echo "running cosmo_sig_clusters.m on sub-$subj, dh: $dh, type: durations_unsmoothed_native, nperms: 1000."
+
+#time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); addpath('/N/slate/brainevo/Implicit_Learning'); cosmo_sig_clusters($subj,$dh,'durations_unsmoothed_native',1000); exit();"
+
+#for subj in 02; do
+#for subj in 01 03 04 05 06 07 08; do
+#for subj in 09 10 13 14 15 16 17; do
+for subj in 18 19 20 21 22 23 24; do
+    #time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); addpath('/N/slate/brainevo/Implicit_Learning'); cosmo_sig_clusters_noh0($subj,$dh,'durations_unsmoothed_native',1000); exit();" > /dev/null 2>&1
+    #time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); addpath('/N/slate/brainevo/Implicit_Learning/CoSMoMVPA/mvpa'); cosmo_sig_clusters($subj,$dh,'durations_unsmoothed_native',1000); exit();" > /dev/null 2>&1
+    time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); addpath('/N/slate/brainevo/Implicit_Learning/CoSMoMVPA/mvpa'); cosmo_sig_clusters($subj,$dh,'breakpoint_rts_unsmoothed_native',1000); exit();" > /dev/null 2>&1
+done
+
+echo "done!"

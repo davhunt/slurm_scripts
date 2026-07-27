@@ -1,0 +1,23 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=initial-cv-native
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=10
+#SBATCH --mem=20GB
+#SBATCH --time=60:00:00
+#SBATCH --output=/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/slurm-outs/slurm-permutation-%j.out
+
+module load matlab/2023b
+
+for sub in 01 02 03 04 05 06 07 08 09 10 13 14 15 16 17 18 19 20 21 22 23 24; do
+    matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); decoding_template_gng_run_initial_cv_splits_slate_moreargs(${sub},10,'durations','native'); exit;" > /dev/null 2>&1
+done
+
+echo "done with durations"
+
+for sub in 01 02 03 04 05 06 07 08 09 10 13 14 15 16 17 18 19 20 21 22 23 24; do
+    matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); decoding_template_gng_run_initial_cv_splits_slate_moreargs(${sub},10,'onsets','native'); exit;" > /dev/null 2>&1
+done
+
+echo "done!"

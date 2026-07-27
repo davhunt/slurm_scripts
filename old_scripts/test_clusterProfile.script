@@ -1,0 +1,16 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=test-ver
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=1GB
+#SBATCH --time=00:03:00
+#SBATCH --output=test-ver-%j.out
+
+module load matlab/2023b
+
+
+time matlab -nodisplay -nosplash -nodesktop -r "parallel.defaultClusterProfile;"
+
+echo "done!"

@@ -1,0 +1,35 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=avg-reps
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=5G
+#SBATCH --time=08:00:00
+#SBATCH --output=/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/slurm-outs/avg-reps-%j.out
+
+# Usage: sbatch --export=ALL,subj=<subj #> run_stats_average_repetitions.script 
+# Generate average (across all 10 CVs) decoding accuracy maps for permuted or real-labelled maps
+## ~10mins / 500 perms
+
+module load matlab/2023b
+
+#if [[ -z $subj ]]; then
+#  echo "subject not specified, exiting."
+#  exit 1
+#fi
+
+#for sub in 03 04 05 06 07 08 09 10 13 14 15 16; do
+#for sub in 17 18 19 20 21 22 23 24; do
+#for sub in 01 02 03 04 05 06 07 08; do
+#for sub in 09 10 13 14 15; do
+#for sub in 16 17 18 19 20 21 22 23 24; do
+#for sub in 16 17 18 19 20 21 24; do
+#for sub in 22 23; do
+#for sub in 01 02 03 04; do
+for sub in 05 06 07 08 09 10 13 14 15 16 17 18 19 20 21 22 23 24; do
+#  time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/statistics'); stats_average_repetitions('/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/0${sub}/MVPA/breakpoint_rts_unsmoothed_native/perm', 'perm'); exit();"
+  time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/statistics'); stats_average_repetitions('/N/project/brainevo/Complex_seq_analysis/0${sub}/MVPA/breakpoint_rts_unsmoothed_native_antsmask_new_bps/perm', 'perm'); exit();"
+done
+
+echo "done!"
