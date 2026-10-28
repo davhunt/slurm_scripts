@@ -1,0 +1,38 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=perms-sentence-reading
+#SBATCH --nodes=1-3
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=30
+#SBATCH --mem=30G
+#SBATCH --time=4:00:00
+#SBATCH --output=/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/slurm-outs/perm100-sr-%j.out
+
+# Usage: sbatch --export=ALL,subj=<subj #>,contrast=<AP, CAOR, or GUG> run_permutations_job.script
+# Run 100 permutations at a time, ~1.5 hours / 100 permutations for AP or CAOR, ~3 hours for GUG, leave one run out
+
+betas_dir="/N/project/brainevo/Sentence_reading"
+excel_file="/N/project/brainevo/Sentence_reading/Sentence reading_newtrialproc_102319_edited by MY for SPM_Tom_edit_for_LSS.xlsx"
+#contrast="GUG" #AP, CAOR, or GUG
+num_perms=100
+
+module load matlab/2023b
+
+if [[ -z $subj ]]; then
+  echo "subject not specified, exiting."
+  exit 1
+elif [[ -z $contrast ]]; then
+  echo "contrast not specified, exiting."
+  exit 1
+fi
+
+echo "running 100 permutations on sub-$subj."
+
+#time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); gng_decoding_permutations($subj,100,10,'breakpoint_rts_unsmoothed_native_antsmask_new_bps'); exit;"
+
+#time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); sentence_reading_decoding_permutations($subj,'/N/project/brainevo/Sentence_reading','/N/project/brainevo/Sentence_reading/Sentence reading_newtrialproc_102319_edited by MY for SPM_Tom_edit_for_LSS.xlsx','windowType1','GUG',100); exit;"
+
+time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); sentence_reading_decoding_permutations($subj,'$betas_dir','$excel_file','windowType1','$contrast',$num_perms); exit;"
+
+
+echo "done!"

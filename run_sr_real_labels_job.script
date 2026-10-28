@@ -1,0 +1,38 @@
+#!/bin/bash
+#SBATCH --account=r00172
+#SBATCH --job-name=perms-sentence-reading
+#SBATCH --nodes=1-3
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=30G
+#SBATCH --time=4:00:00
+#SBATCH --output=/N/slate/brainevo/Implicit_Learning/Complex_seq_analysis/slurm-outs/sr-real-labels%j.out
+
+# Usage: sbatch --export=ALL,subj=<subj #>,contrast=<AP, CAOR, or GUG> run_sr_real_labels_job.script
+# Or slash-separated list of subjects:
+#        sbatch --export=ALL,subj='1/2/3/4/5/6/7/8/9/10',contrast=<AP, CAOR, or GUG> run_sr_real_labels_job.script
+# Real-labelled LORO decoding analysis, takes ~5-10 minutes per sub
+
+betas_dir="/N/project/brainevo/Sentence_reading"
+excel_file="/N/project/brainevo/Sentence_reading/Sentence reading_newtrialproc_102319_edited by MY for SPM_Tom_edit_for_LSS.xlsx"
+#contrast="GUG" #AP, CAOR, or GUG
+
+module load matlab/2023b
+
+if [[ -z $subj ]]; then
+  echo "subject not specified, exiting."
+  exit 1
+elif [[ -z $contrast ]]; then
+  echo "contrast not specified, exiting."
+  exit 1
+fi
+
+echo "running decoding analysis on sub-$subj."
+
+IFS='/' read -r -a subj_arr <<< "$subj"
+
+for subj in ${subj_arr[@]}; do
+   time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); sentence_reading_decoding_real_labels($subj,'$betas_dir','$excel_file','windowType1','$contrast'); exit;"
+done
+
+echo "done!"
