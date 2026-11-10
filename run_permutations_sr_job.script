@@ -28,11 +28,18 @@ fi
 
 echo "running 100 permutations on sub-$subj."
 
-#time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); gng_decoding_permutations($subj,100,10,'breakpoint_rts_unsmoothed_native_antsmask_new_bps'); exit;"
-
-#time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); sentence_reading_decoding_permutations($subj,'/N/project/brainevo/Sentence_reading','/N/project/brainevo/Sentence_reading/Sentence reading_newtrialproc_102319_edited by MY for SPM_Tom_edit_for_LSS.xlsx','windowType1','GUG',100); exit;"
-
-time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); sentence_reading_decoding_permutations($subj,'$betas_dir','$excel_file','windowType1','$contrast',$num_perms); exit;"
+# For A/P and CA/OR, convolve w/ stimulus window type 1: sentences with two word windows for active/passive pairs, anchored with "by" for passives
+# For G/UG, convolve w/ stimulus window type 2: just the ungrammatical word / corresponding grammatical word
+if [[ "$contrast" == "AP" ]] || [[ "$contrast" == "CAOR" ]]
+  then
+  time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); sentence_reading_decoding_permutations($subj,'$betas_dir','$excel_file','windowType1','$contrast',$num_perms); exit;"
+elif [[ "$contrast" == "GUG" ]]
+  then
+  time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); sentence_reading_decoding_permutations($subj,'$betas_dir','$excel_file','windowType2','$contrast',$num_perms); exit;"
+else
+  echo "contrast $contrast must be AP, CAOR, or GUG, exiting."
+  exit 1
+fi
 
 
 echo "done!"

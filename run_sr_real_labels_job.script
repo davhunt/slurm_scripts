@@ -31,8 +31,16 @@ echo "running decoding analysis on sub-$subj."
 
 IFS='/' read -r -a subj_arr <<< "$subj"
 
-for subj in ${subj_arr[@]}; do
-   time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); sentence_reading_decoding_real_labels($subj,'$betas_dir','$excel_file','windowType1','$contrast'); exit;"
-done
+# For A/P and CA/OR, convolve w/ stimulus window type 1: sentences with two word windows for active/passive pairs, anchored with "by" for passives
+# For G/UG, convolve w/ stimulus window type 2: just the ungrammatical word / corresponding grammatical word
+if [[ "$contrast" == "AP" ]] || [[ "$contrast" == "CAOR" ]]; then
+  for subj in ${subj_arr[@]}; do
+     time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); sentence_reading_decoding_real_labels($subj,'$betas_dir','$excel_file','windowType1','$contrast'); exit;"
+  done
+elif [[ "$contrast" == "GUG" ]]; then
+  for subj in ${subj_arr[@]}; do
+     time matlab -nodisplay -nosplash -nodesktop -r "addpath('/N/slate/brainevo/Implicit_Learning/tdt_3.999I/decoding_toolbox/templates'); sentence_reading_decoding_real_labels($subj,'$betas_dir','$excel_file','windowType2','$contrast'); exit;"
+  done
+fi
 
 echo "done!"
